@@ -1,0 +1,19 @@
+Source: django-cms
+Maintainer: Marco Bardelli <marco.bardelli@servabit.it>
+Section: python
+Priority: optional
+Build-Depends-Indep:  python-support
+Build-Depends: debhelper (>= 7.0.50~), quilt
+Standards-Version: 3.8.0
+Vcs-Git: git://github.com/safanaj/django-cms.git
+XS-Package-Version: >= 2.6
+
+Package: python-django-cms
+Section: python
+Priority: optional
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-django,
+ python-imaging, python-django-mptt
+Provides: ${python:Provides}
+Description: Ciao
+ Django-CMS by DIVIO, WOW!!!

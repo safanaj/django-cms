@@ -1,0 +1,61 @@
+Index: django-cms/cms/plugins/text/templates/cms/plugins/widgets/tinymce.html
+===================================================================
+--- django-cms.orig/cms/plugins/text/templates/cms/plugins/widgets/tinymce.html
++++ django-cms/cms/plugins/text/templates/cms/plugins/widgets/tinymce.html
+@@ -41,7 +41,7 @@ tinymce.create('tinymce.plugins.CMSPlugi
+ 						texteditor = get_editor("{{ name }}");
+ 						
+ 						// First create db instance using AJAX post back
+-						add_plugin(pluginvalue, parent_id, language)
++						add_plugin(pluginvalue, parent_id, language);
+ 		             }
+ 		        });
+ 				{% for p in installed_plugins %}
+@@ -84,11 +84,11 @@ tinymce.create('tinymce.plugins.CMSPlugi
+ tinymce.PluginManager.add('cmsplugins', tinymce.plugins.CMSPluginEditor);
+ 
+ function init_plugin_editor(placeholder){
+-	var toolbar = get_plugin_html()
+-	var html = '<table class="mceToolbar mceToolbarRow3 Enabled"><tbody>'
+-	html += '<td class="mceToolbarStart mceToolbarStartListBox mceFirst">'
+-	html += '<span></span>'
+-	html += '</td><td>' + toolbar + '</td></tbody></table>'
++	var toolbar = get_plugin_html();
++	var html = '<table class="mceToolbar mceToolbarRow3 Enabled"><tbody>';
++	html += '<td class="mceToolbarStart mceToolbarStartListBox mceFirst">';
++	html += '<span></span>';
++	html += '</td><td>' + toolbar + '</td></tbody></table>';
+ 	$("td.mceToolbar").append(html);
+ 	init_buttons(placeholder);
+ }
+@@ -113,7 +113,7 @@ function init_buttons(placeholder){
+ 			return;
+ 		}
+ 		// First create db instance using AJAX post back
+-		add_plugin(pluginvalue, parent_id, language)
++		add_plugin(pluginvalue, parent_id, language);
+ 		
+ 	}).css("cursor", "pointer").css("margin", "5px");
+ 	
+Index: django-cms/cms/plugins/text/templates/cms/plugins/widgets/wymeditor.html
+===================================================================
+--- django-cms.orig/cms/plugins/text/templates/cms/plugins/widgets/wymeditor.html
++++ django-cms/cms/plugins/text/templates/cms/plugins/widgets/wymeditor.html
+@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
+         postInit: function(wym) {
+ 			 //wym.resizable({handles: "s", maxHeight: 600});
+             //construct the insertLinkButton html
+-            html = get_plugin_html()
++            html = get_plugin_html();
+             //add the button to the tools box
+             jQuery(wym._box)
+             .find(wym._options.toolsSelector + wym._options.toolsListSelector)
+@@ -74,7 +74,7 @@ jQuery(document).ready(function ($) {
+ 				return;
+ 			}
+ 			// First create db instance using AJAX post back
+-			add_plugin(pluginvalue, parent_id, language)
++			add_plugin(pluginvalue, parent_id, language);
+ 			
+ 		}).css("cursor", "pointer").css("margin", "5px");
+ 		

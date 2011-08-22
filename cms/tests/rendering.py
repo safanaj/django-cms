@@ -2,8 +2,10 @@
 from __future__ import with_statement
 from cms import plugin_rendering
 from cms.api import create_page, add_plugin
+from cms.models.placeholdermodel import Placeholder
 from cms.models.pluginmodel import CMSPlugin
-from cms.plugin_rendering import render_plugins, PluginContext
+from cms.plugin_rendering import (render_plugins, PluginContext, 
+    render_placeholder_toolbar)
 from cms.test_utils.testcases import SettingsOverrideTestCase
 from cms.test_utils.util.context_managers import SettingsOverride, ChangeModel
 from cms.test_utils.util.mock import AttributeObject
@@ -11,6 +13,7 @@ from django.contrib.auth.models import User
 from django.forms.widgets import Media
 from django.http import Http404, HttpResponseRedirect
 from django.template import Template, RequestContext
+from sekizai.context import SekizaiContext
 
 TEMPLATE_NAME = 'tests/rendering/base.html'
 
@@ -127,7 +130,7 @@ class RenderingTestCase(SettingsOverrideTestCase):
         """
         with SettingsOverride(**self.render_settings()):
             from cms.views import details
-            response = details(self.get_request(self.test_page), slug=self.test_page.get_slug())
+            response = details(self.get_request(self.test_page), '')
             r = self.strip_rendered(response.content)
             self.assertEqual(r, u'|'+self.test_data['text_main']+u'|'+self.test_data['text_sub']+u'|')
         
@@ -228,11 +231,13 @@ class RenderingTestCase(SettingsOverrideTestCase):
         
     def test_detail_view_404_when_no_language_is_found(self):
         with SettingsOverride(TEMPLATE_CONTEXT_PROCESSORS=[],
-                              CMS_LANGUAGES=[( 'klingon', 'Klingon' ),
-                                          ( 'elvish', 'Elvish' )]):
+                              CMS_LANGUAGES=[
+                                  ('x-klingon', 'Klingon'),
+                                  ('x-elvish', 'Elvish')
+                              ]):
             from cms.views import details
             request = AttributeObject(
-                REQUEST={'language': 'elvish'},
+                REQUEST={'language': 'x-elvish'},
                 GET=[],
                 session={},
                 path='/',
@@ -240,23 +245,24 @@ class RenderingTestCase(SettingsOverrideTestCase):
                 current_page=None,
                 method='GET',
             )
-            self.assertRaises(Http404, details, request, slug=self.test_page.get_slug())
+            self.assertRaises(Http404, details, request, '')
 
-    def test_detail_view_fallsback_language(self):
+    def test_detail_view_fallback_language(self):
         '''
         Ask for a page in elvish (doesn't exist), and assert that it fallsback
         to English
         '''
         with SettingsOverride(TEMPLATE_CONTEXT_PROCESSORS=[],
                               CMS_LANGUAGE_CONF={
-                                  'elvish': ['klingon', 'en',]
+                                  'x-elvish': ['x-klingon', 'en',]
                               },
-                              CMS_LANGUAGES=[( 'klingon', 'Klingon' ),
-                                          ( 'elvish', 'Elvish' )
+                              CMS_LANGUAGES=[
+                                  ('x-klingon', 'Klingon'),
+                                  ('x-elvish', 'Elvish'),
                               ]):
             from cms.views import details
             request = AttributeObject(
-                REQUEST={'language': 'elvish'},
+                REQUEST={'language': 'x-elvish'},
                 GET=[],
                 session={},
                 path='/',
@@ -265,10 +271,32 @@ class RenderingTestCase(SettingsOverrideTestCase):
                 method='GET',
             )
 
-            response = details(request, slug=self.test_page.get_slug())
+            response = details(request, '')
             self.assertTrue(isinstance(response,HttpResponseRedirect))
             
     def test_extra_context_isolation(self):
         with ChangeModel(self.test_page, template='extra_context.html'):
             response = self.client.get(self.test_page.get_absolute_url())
             self.assertTrue('width' not in response.context)
+
+    def test_render_placeholder_toolbar(self):
+        placeholder = Placeholder()
+        placeholder.slot = 'test'
+        placeholder.pk = placeholder.id = 99
+        context = SekizaiContext()
+        context['request'] = AttributeObject(
+            REQUEST={'language': 'en'},
+            GET=[],
+            session={},
+            path='/',
+            user=self.test_user,
+            current_page=None,
+            method='GET',
+        )
+        classes = [
+            "cms_placeholder-bar-%s" % placeholder.pk,
+            "cms_placeholder_slot::test",
+        ]
+        output = render_placeholder_toolbar(placeholder, context, '', 'test')
+        for cls in classes:
+            self.assertTrue(cls in output, '%r is not in %r' % (cls, output))

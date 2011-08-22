@@ -181,9 +181,9 @@ under "Application". Save the page.
     If at some point you want to remove this apphook after deleting the cms_app.py
     there is a cms management command called uninstall apphooks
     that removes the specified apphook(s) from all pages by name.
-    eg. ``manage.py cmsmanage uninstall apphooks MyApphook``.
+    eg. ``manage.py cms uninstall apphooks MyApphook``.
     To find all names for uninstallable apphooks there is a command for this aswell
-    ``manage.py cmsmanage list apphooks``.
+    ``manage.py cms list apphooks``.
 
 If you attached the app to a page with the url ``/hello/world/`` and the app has
 a urls.py that looks like this::
@@ -199,9 +199,12 @@ The ``main_view`` should now be available at ``/hello/world/`` and the
 ``sample_view`` has the url ``/hello/world/sublevel/``.
 
 
-.. note:: All views that are attached like this must return a
-          :class:`~django.template.RequestContext` instance instead of the
-          default :class:`~django.template.Context` instance.
+.. note::
+
+    All views that are attached like this must return a
+    :class:`~django.template.RequestContext` instance instead of the
+    default :class:`~django.template.Context` instance.
+
 
 Language Namespaces
 -------------------
@@ -310,7 +313,7 @@ An example use-case
 -------------------
 
 A simple example: you have a news application that publishes pages
-independently of Django CMS. However, you would like to integrate the 
+independently of django CMS. However, you would like to integrate the
 application into the menu structure of your site, so that at appropriate 
 places a *News* node appears in the navigation menu.
 

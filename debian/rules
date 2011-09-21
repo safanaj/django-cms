@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+include /usr/share/python/python.mk
+
+
+dpkgname=$(shell dpkg-parsechangelog | grep ^Source | cut -d' ' -f2)
+dpkgorigver=$(shell dpkg-parsechangelog | grep ^Version | cut -d' ' -f2 | cut -d'-' -f1)
+
+
+get-orig-source:
+	quilt pop -a || true
+	mkdir $(dpkgname)
+	git ls-files | grep -v -e '^debian' -e '\.gitignore' -e '\.hgignore' -e '\.hgtags' \
+	| sed 's,^\(.*\)$$,"\1",' | xargs tar -cf - | tar -C $(dpkgname) -xf -
+	tar -czf ../$(dpkgname)_$(dpkgorigver).orig.tar.gz $(dpkgname)/
+	rm -rf $(dpkgname)/
+
+
+override_dh_auto_install:
+	test -e $(CURDIR)/debian/NOPATCH || quilt push -a || true
+	python setup.py install --install-layout=deb --root=$(CURDIR)/debian/tmp
+	#rm -rf $(CURDIR)/debian/tmp$(py_libdir_sh)/*.egg-info
+	rm -rf $(CURDIR)/debian/tmp$(py_libdir_sh)/cms/tests
+	find $(CURDIR)/debian/tmp$(py_libdir_sh)/cms \
+		-type f -executable -print0 | xargs -0 chmod -x
+
+
+override_dh_auto_clean:
+	python setup.py clean
+	find $(CURDIR) -type f -name '*~' -print0 | xargs -0 rm -f
+	find $(CURDIR) -type f -name '*.py[co]' -print0 | xargs -0 rm -f
+	rm -rf *.egg-info build dists MANIFEST
+
+%:
+	dh $@
+

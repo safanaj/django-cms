@@ -1,0 +1,68 @@
+django-cms (2.2rc3-servabit0) unstable; urgency=low
+
+  * New Upstream Tag: 2.2rc3
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Fri, 09 Sep 2011 17:43:22 +0200
+
+django-cms (2.2pre-servabit0) unstable; urgency=low
+
+  * confirmed patch fix_plugin_text_tmpl_widgets.diff
+    to fix some javascpript
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Tue, 17 May 2011 11:13:20 +0200
+
+django-cms (2.1.3-servabit9) unstable; urgency=low
+
+  * reset dependency on python-django-mptt
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Thu, 14 Apr 2011 17:11:25 +0200
+
+django-cms (2.1.3-servabit8) unstable; urgency=low
+
+  * New Upstream release: 2.1.3-final
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Mon, 28 Feb 2011 16:53:22 +0100
+
+django-cms (2.1.2-servabit7) unstable; urgency=low
+
+  * New Upstream release: 2.1.2-final
+  * Added cms/plugins/textplus to integrate image/video/text in one plugin
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Wed, 23 Feb 2011 10:54:16 +0100
+
+django-cms (2.1.0-servabit6) unstable; urgency=low
+
+  * Added python-imaging dependency
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Thu, 03 Feb 2011 10:51:36 +0100
+
+django-cms (2.1.0-servabit5) unstable; urgency=low
+
+  * Some fix for clean and get-orig-source
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Fri, 28 Jan 2011 14:52:03 +0100
+
+django-cms (2.1.0-servabit4) unstable; urgency=low
+
+  * New Upstream release: 2.1.0-final
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Fri, 28 Jan 2011 09:10:10 +0100
+
+django-cms (2.1.0-servabit3) unstable; urgency=low
+
+  * New Upstream RC
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Mon, 24 Jan 2011 18:33:05 +0100
+
+django-cms (2.1.0-servabit2) unstable; urgency=low
+
+  * New Upstream
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Thu, 23 Dec 2010 17:05:05 +0100
+
+django-cms (2.0.2-servabit1) unstable; urgency=low
+
+  * Initial Package
+
+ -- Marco Bardelli <marco.bardelli@servabit.it>  Mon, 20 Dec 2010 15:17:07 +0100
+

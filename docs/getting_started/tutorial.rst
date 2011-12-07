@@ -82,6 +82,11 @@ Also add any (or all) of the following plugins, depending on your needs:
 * ``'cms.plugins.video'``
 * ``'cms.plugins.twitter'``
 
+.. warning::
+
+    Adding the ``'cms.plugins.snippet'`` plugin is a potential security hazard.
+    For more information, refer to :ref:`snippets-plugin`.
+
 They are described in more detail in chapter :doc:`Plugins reference <plugin_reference>`.
 There is even more plugins available on django CMS `extensions page`_.
 
@@ -272,6 +277,7 @@ Here is a simple example for a base template called ``base.html``:
         {% render_block "css" %}
     </head>
     <body>
+        {% cms_toolbar %}
         {% placeholder base_content %}
         {% block base_content%}{% endblock %}
         {% render_block "js" %}

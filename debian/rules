@@ -16,6 +16,7 @@ get-orig-source:
 
 
 override_dh_auto_install:
+	dh_testdir
 	test -e $(CURDIR)/debian/NOPATCH || quilt push -a || true
 	python setup.py install --install-layout=deb --root=$(CURDIR)/debian/tmp
 	#rm -rf $(CURDIR)/debian/tmp$(py_libdir_sh)/*.egg-info
@@ -23,12 +24,18 @@ override_dh_auto_install:
 	find $(CURDIR)/debian/tmp$(py_libdir_sh)/cms \
 		-type f -executable -print0 | xargs -0 chmod -x
 
+	# build docs
+	make -C docs html
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/doc/python-django-cms
+	cp -a  docs/build/html \
+		$(CURDIR)/debian/tmp/usr/share/doc/python-django-cms
+
 
 override_dh_auto_clean:
 	python setup.py clean
 	find $(CURDIR) -type f -name '*~' -print0 | xargs -0 rm -f
 	find $(CURDIR) -type f -name '*.py[co]' -print0 | xargs -0 rm -f
-	rm -rf *.egg-info build dists MANIFEST
+	rm -rf *.egg-info build dists MANIFEST docs/build
 
 %:
 	dh $@
